@@ -41,6 +41,13 @@ Collaborative R analysis of **858 patient records**, covering missing-data handl
 
 [Analysis and report](https://github.com/VioletGo319/Cervical-Cancer-Classification) · **R / statistical modeling / healthcare data**
 
+## Research & Technical Writing
+
+### Sparse + Low-Rank Gaussian Graphical Models
+A **STAT 802 technical review** connecting latent-variable precision matrix decomposition, convex optimization, geometric identifiability, and statistical consistency. Includes an attributed discussion of the reference paper's experiments.
+
+[Read the report and source](https://github.com/VioletGo319/VioletGo319/tree/main/research/latent-variable-ggm) · **High-dimensional statistics / graphical models / scientific writing**
+
 ## Engineering experience
 
 - **Talengine — AI Engineer Intern:** Built a LangGraph multi-agent interview system connecting resume-based questions, LLM answers, and adaptive follow-ups in structured JSON dialogue trees; deployed MinerU parsing and candidate-matching workflows on AWS.

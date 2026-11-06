@@ -1,0 +1,255 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,booktabs,array,xcolor,enumitem,fancyhdr,titlesec,hyperref}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{126C78}
+\hypersetup{colorlinks=true,urlcolor=teal,linkcolor=teal,citecolor=teal,
+ pdftitle={Sparse and Low-Rank Gaussian Graphical Models},pdfauthor={Xinyu Wang}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\headheight}{14pt}
+\setlist[itemize]{leftmargin=1.3em,itemsep=3pt,topsep=3pt}
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{navy}}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{12pt}{5pt}
+\titlespacing*{\subsection}{0pt}{8pt}{3pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{navy}Xinyu Wang\quad /\quad Research \& Technical Writing}
+\fancyhead[R]{\small STAT 802}
+\fancyfoot[L]{\footnotesize Literature review\;\textbullet\;Portfolio edition}
+\fancyfoot[R]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sign}{\operatorname{sign}}
+\begin{document}
+\thispagestyle{fancy}
+{\small\bfseries\color{teal}HIGH-DIMENSIONAL STATISTICS / CONVEX OPTIMIZATION}\par
+\vspace{4pt}
+{\LARGE\bfseries\color{navy}Sparse and Low-Rank\\[3pt]Gaussian Graphical Models}\par
+{\large A technical review of latent-variable model selection}\par
+\vspace{3pt}
+\textbf{Xinyu (Ricky) Wang}\\
+Statistics \& Data Science PhD candidate, University of Delaware\\
+STAT 802 final report: May 2026\quad |\quad Portfolio revision: November 2026
+
+\section*{Scope and contribution}
+This report synthesizes the framework of Chandrasekaran, Parrilo, and Willsky
+\cite{cpw}. My contribution is an exposition connecting the Schur complement,
+sparse--low-rank decomposition, geometric identifiability, and statistical recovery.
+The model, recovery results, and numerical studies reviewed here are attributed
+to that paper. This edition does not present a new estimator, an original
+consistency proof, or an independently executed experiment.
+
+\section{Why latent variables change the graph}
+A Gaussian graphical model describes conditional independence among jointly
+Gaussian variables. For covariance $\Sigma\succ0$ and precision $K=\Sigma^{-1}$,
+an off-diagonal zero $K_{ij}=0$ means that variables $i$ and $j$ are independent
+conditional on the remaining variables. Precision entries are not themselves
+correlation coefficients; the corresponding partial correlation is
+$-K_{ij}/\sqrt{K_{ii}K_{jj}}$.
+
+In high dimensions, the sample covariance can be singular or unstable. Sparse
+precision estimation reduces complexity, but a sparse-only model can become
+misleading when unobserved factors influence many observed variables. In stock
+returns, for example, common market effects can induce widespread dependence.
+
+Partition the joint precision matrix into observed ($O$) and hidden ($H$) blocks:
+\[
+K^*_{(OH)}=\begin{pmatrix}K_O^*&K_{O,H}^*\\K_{H,O}^*&K_H^*\end{pmatrix}.
+\]
+The Schur complement gives the \emph{marginal} precision of the observed vector:
+\begin{equation}
+\widetilde K_O^*=(\Sigma_O^*)^{-1}
+=\underbrace{K_O^*}_{S^*}
+-\underbrace{K_{O,H}^*(K_H^*)^{-1}K_{H,O}^*}_{L^*}.
+\end{equation}
+Here $S^*$ is the precision of $X_O$ \emph{conditional on} $X_H$. The matrix
+$L^*\succeq0$ has rank at most the number of hidden variables and can be dense.
+Thus, the observed precision $S^*-L^*$ need not be sparse even when the
+conditional graph is sparse. Marginalization and conditioning are different
+operations; this distinction is central to the interpretation of the model.
+
+\newpage
+\section{A joint estimation objective}
+Let $\widehat\Sigma_O$ be the sample covariance of the observed variables.
+The regularized likelihood formulation reviewed in \cite{cpw} is
+\begin{equation}
+\begin{aligned}
+(\widehat S,\widehat L)=\arg\min_{S,L}\;&
+-\log\det(S-L)+\tr\!\left[\widehat\Sigma_O(S-L)\right]\\
+&+\lambda_n\bigl(\gamma\|S\|_1+\tr(L)\bigr),\\
+\text{subject to }&S-L\succ0,\qquad L\succeq0.
+\end{aligned}
+\end{equation}
+The likelihood term fits the observed covariance. The entrywise $\ell_1$ penalty
+encourages sparsity in $S$, while the trace penalty encourages low rank in $L$.
+For positive-semidefinite $L$, its trace equals its nuclear norm. The parameter
+$\lambda_n$ controls overall regularization and $\gamma$ controls the relative
+penalty on the sparse component.
+
+The unconstrained regularizer
+$f_\gamma(S,L)=\gamma\|S\|_1+\|L\|_*$ has dual norm
+\begin{equation}
+g_\gamma(S,L)=\max\left\{\frac{\|S\|_\infty}{\gamma},\|L\|_2\right\},
+\end{equation}
+where $\|\cdot\|_\infty$ denotes the largest absolute matrix entry and
+$\|\cdot\|_2$ denotes the spectral norm. The placement of $\gamma$ matters:
+the sparse-component norm is divided by $\gamma$.
+
+\section{When can the two components be separated?}
+Sparsity and low rank alone do not guarantee a unique decomposition. A matrix
+concentrated on a small set of entries can be both sparse and low rank.
+The geometric analysis asks whether local perturbations of the two structures
+can mimic one another.
+
+For a sparse matrix $S^*$ and a rank-$r$ matrix $L^*=UDV^\top$, the relevant
+tangent spaces are
+\begin{align}
+\Omega(S^*)&=\{N:\supp(N)\subseteq\supp(S^*)\},\\
+T(L^*)&=\{UY_1^\top+Y_2V^\top:Y_1,Y_2\in\mathbb R^{p\times r}\}.
+\end{align}
+The latter expression uses the ambient matrix space; symmetric perturbations
+are used for the symmetric model. Local separability requires
+$\Omega\cap T=\{0\}$, rather than orthogonality of the two spaces.
+
+The quantities
+\[
+\mu(\Omega)=\max_{N\in\Omega,\,\|N\|_\infty\leq1}\|N\|_2,
+\qquad
+\xi(T)=\max_{N\in T,\,\|N\|_2\leq1}\|N\|_\infty
+\]
+measure how strongly perturbations can concentrate under the two norms.
+One sufficient geometric criterion uses
+\begin{equation}
+\chi(\Omega,T,\gamma)=\max\left\{\frac{\xi(T)}{\gamma},\,2\mu(\Omega)\gamma\right\}.
+\end{equation}
+If $\mu(\Omega)\xi(T)<1/2$, choosing
+$\xi(T)<\gamma<1/[2\mu(\Omega)]$ makes $\chi<1$.
+This tangent-space condition is a useful starting point, but is not by itself
+the full set of assumptions needed for statistical consistency.
+
+\newpage
+\section{From geometric separation to statistical recovery}
+\subsection{Likelihood curvature and stability}
+The likelihood adds a second layer of geometry. At the true marginal precision,
+the Fisher information acts on a perturbation $\Delta$ as
+\[
+\mathcal I^*(\Delta)=\Sigma_O^*\Delta\Sigma_O^*.
+\]
+The recovery analysis must control both the information retained within the
+structured tangent spaces and its leakage into complementary directions.
+It also controls how the tangent space of the low-rank variety changes near
+$L^*$. A very small nonzero singular value makes rank recovery less stable.
+These are stronger requirements than merely separating two spaces at one point.
+
+\subsection{A schematic reading of Theorem 4.1}
+Write $\xi=\xi(T)$ and $\mu=\mu(\Omega)$. Let $\sigma$ be the smallest
+nonzero singular value of $L^*$ and $\theta$ the smallest magnitude of a nonzero
+entry of $S^*$. Under the identifiability and Fisher-information assumptions
+of Proposition 3.3, with $\gamma$ in its admissible range, Theorem 4.1 of
+\cite{cpw} uses the following scaling conditions:
+\begin{align}
+n&\gtrsim\frac{p}{\xi^4},
+&\lambda_n&\asymp\frac{1}{\xi}\sqrt{\frac{p}{n}},\\
+\sigma&\gtrsim\frac{\lambda_n}{\xi^2},
+&\theta&\gtrsim\frac{\lambda_n}{\mu}.
+\end{align}
+This is a schematic summary, not a replacement for the full theorem.
+The symbols $\gtrsim$ and $\asymp$ suppress factors involving the covariance
+scale and the Fisher-information constants. Those factors, as well as the
+admissible range of $\gamma$, must be retained when checking a particular model.
+
+The theorem gives, with probability greater than $1-2e^{-p}$,
+\begin{align}
+\sign(\widehat S)&=\sign(S^*),
+&\rank(\widehat L)&=\rank(L^*),\\
+g_\gamma(\widehat S-S^*,\widehat L-L^*)&\lesssim
+\frac{1}{\xi}\sqrt{\frac{p}{n}}.
+\end{align}
+The first line describes \emph{algebraic correctness}: recovering the signed
+sparse structure and the rank of the latent component. The second controls
+estimation error. Recovering a low-rank matrix does not identify a unique set
+of named latent factors or a unique factorization.
+
+\subsection{What the guarantee means in practice}
+\begin{itemize}
+\item \textbf{Structure and estimation are distinct targets.} A small matrix
+error does not automatically imply exact edge or rank recovery when signals
+are weak.
+\item \textbf{Sample requirements depend on geometry.} The dimension $p$,
+incoherence quantity $\xi$, and sparse structure all matter; a sample-size
+condition depending only on $p$ omits essential assumptions.
+\item \textbf{Theory guides rather than replaces validation.} Stability across
+regularization choices and performance on held-out observations are separate
+empirical questions.
+\end{itemize}
+
+\newpage
+\section{Numerical evidence reported in the source paper}
+\textbf{Provenance.} The studies and numerical values in this section are from
+Section 6 of \cite{cpw}. They are reviewed here, not reproduced by a new run.
+
+\subsection{Synthetic graphical models}
+The source paper studies three 36-node settings: two cycle-based models with
+two and three hidden variables, and a $6\times6$ grid with one hidden variable.
+Each setting uses 50 trials. The reported recovery curves illustrate how
+algebraic correctness improves as the sample-to-dimension ratio increases.
+Such finite simulations illustrate the theory; they do not prove consistency.
+
+\subsection{Stock-return example}
+The empirical example uses 216 monthly observations from 1990--2007 for
+84 S\&P 100 stocks. The paper compares a sparse-only fit with a latent-variable
+fit. Its reported comparison is summarized below.
+\begin{center}
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Reported quantity} & \textbf{Sparse-only} & \textbf{Sparse + latent}\\
+\midrule
+Sparse edges & 646 & 135\\
+Latent components & 0 & 5\\
+Parameter count (paper's convention) & 730 & 639\\
+KL divergence relative to sample-covariance Gaussian & 44.4 & 17.7\\
+\bottomrule
+\end{tabular}
+\end{center}
+\textit{Source: Chandrasekaran et al. (2012), Section 6.2 and Figure 2.}
+
+The parameter count $84+135+5\times84=639$ follows the paper's convention.
+Lower divergence indicates better fit to its covariance-based reference,
+not demonstrated out-of-sample forecasting or trading performance.
+
+For orientation, if the reference Gaussian is $\mathcal N(0,\widehat\Sigma)$
+and the fitted Gaussian is $\mathcal N(0,K^{-1})$, then
+\[
+D_{\mathrm{KL}}\!\left(\mathcal N(0,\widehat\Sigma)\,\|\,
+\mathcal N(0,K^{-1})\right)
+=\tfrac12\!\left[\tr(K\widehat\Sigma)-\log\det(K\widehat\Sigma)-p\right].
+\]
+This formula states the direction explicitly; KL divergence is asymmetric.
+
+\section{Discussion and next steps}
+The decomposition distinguishes local conditional relationships from shared
+latent effects. Its use requires attention to Gaussian assumptions, structural
+separation, and regularization stability. Temporal dependence and nonstationarity
+also deserve investigation; graph edges alone do not establish causality.
+
+A future implementation could compare support recovery, latent rank, estimation
+error, and held-out likelihood against a sparse-only baseline. This remains
+proposed follow-up work.
+
+{\footnotesize\textbf{Figure note.} Original image attachments were unavailable;
+see Figures 1--2 in the cited paper.}
+
+\begin{thebibliography}{1}\small
+\bibitem{cpw} V. Chandrasekaran, P. A. Parrilo, and A. S. Willsky (2012).
+Latent variable graphical model selection via convex optimization.
+\emph{The Annals of Statistics}, 40(4), 1935--1967.
+\href{https://doi.org/10.1214/11-AOS949}{doi:10.1214/11-AOS949}.
+\href{https://arxiv.org/html/1008.1290}{Open-access text}.
+\end{thebibliography}
+\end{document}
