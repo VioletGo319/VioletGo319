@@ -15,6 +15,7 @@ PhD candidate in **Statistics & Data Science** at the **University of Delaware**
 | Interest | Recommended projects | What to look for |
 | --- | --- | --- |
 | **MLE / computer vision** | [Camera–LiDAR Perception](https://github.com/VioletGo319/ros2-perception) · [Shopee Product Matching](https://github.com/VioletGo319/Shopee-Kaggle-Competion_Python) | An integrated inference pipeline; image embeddings and multimodal retrieval |
+| **Time-series / forecasting** | [Stock & Energy Forecasting](https://github.com/VioletGo319/Forecasting-PatchTST-Project) | Seven-model comparison, chronological splits, raw-unit evaluation, and runtime reporting |
 | **Data science / modeling** | [RL Strategy Evaluation](https://github.com/VioletGo319/Reinforcement_Learning_strategy) · [Cervical Cancer Risk Modeling](https://github.com/VioletGo319/Cervical-Cancer-Classification) | Rolling validation, model comparison, feature selection, and evaluation |
 | **NLP / AI applications** | [Hate Speech Classification](https://github.com/VioletGo319/Hate_speech_detection) | Text preprocessing, BERT representations, baseline comparisons, and ROC analysis |
 | **Research communication** | [SDR Geometry Universe](https://github.com/VioletGo319/sdr-geometry-universe) | Interactive explanation of dimension reduction using Three.js |
@@ -30,6 +31,11 @@ Built an inference pipeline combining **YOLOv8n**, camera–LiDAR fusion, vehicl
 Contributed to a team solution combining **Swin Transformer, NFNet, ArcFace, TF-IDF, and perceptual hashes** to retrieve matching product listings. Team result: **silver medal, top 4%**. The repository documents the archived inference notebook and its external dependencies.
 
 [Notebook and pipeline](https://github.com/VioletGo319/Shopee-Kaggle-Competion_Python) · **PyTorch / computer vision / metric learning / retrieval**
+
+### Stock & Energy Forecasting with PatchTST
+Adapted the PatchTST codebase into a configurable **seven-model forecasting workflow** for Microsoft stock prices and AEP electricity demand. Added custom data loading, chronological splits, inverse scaling, and CSV accuracy/runtime summaries to compare transformer and linear baselines.
+
+[Code and recorded results](https://github.com/VioletGo319/Forecasting-PatchTST-Project) · **PyTorch / time series / experiment pipelines / model evaluation**
 
 ### Reinforcement Learning Strategy Evaluation
 Contributed to an NYU course project comparing **PPO, A2C, and DDPG** through rolling training and validation windows, selecting models by validation Sharpe ratio before the next trading period.
