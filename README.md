@@ -1,10 +1,10 @@
 # Xinyu (Ricky) Wang
 
-**Statistics PhD candidate · Machine Learning · Data Science · AI Engineering**
+**Statistics & Data Science PhD candidate · Machine Learning · Data Science · AI Engineering**
 
 I build statistical learning models and applied ML systems, from representation learning and model evaluation to multi-agent LLM workflows and cloud deployment.
 
-PhD candidate at the **University of Delaware** (expected Spring 2029), advised by **Wei Qian**. Previously, **MS in Biostatistics at NYU**.
+PhD candidate in **Statistics & Data Science** at the **University of Delaware** (expected Spring 2029), advised by **Wei Qian**. Previously, **MS in Biostatistics at NYU**.
 
 **Seeking Summer 2027 internships in the United States:** Data Science, Machine Learning Engineering, and AI Engineering. Available from May 16; open to relocation.
 
