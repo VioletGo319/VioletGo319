@@ -8,7 +8,7 @@ PhD candidate in **Statistics & Data Science** at the **University of Delaware**
 
 **Seeking Summer 2027 internships in the United States:** Data Science, Machine Learning Engineering, and AI Engineering. Available from May 16; open to relocation.
 
-[LinkedIn](https://www.linkedin.com/in/xinyu-wang-ba8150248/) · [Google Scholar](https://scholar.google.com/citations?user=hVfKYKkAAAAJ) · [Email](mailto:xw3080@nyu.edu)
+[LinkedIn](https://www.linkedin.com/in/xinyu-wang-ba8150248/) · [Google Scholar](https://scholar.google.com/citations?user=hVfKYKkAAAAJ) · **NYU:** [xw3080@nyu.edu](mailto:xw3080@nyu.edu) · **UD:** [xwyu@udel.edu](mailto:xwyu@udel.edu)
 
 ## Start here
 
