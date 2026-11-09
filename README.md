@@ -18,7 +18,6 @@ PhD candidate in **Statistics & Data Science** at the **University of Delaware**
 | **Time-series / forecasting** | [Stock & Energy Forecasting](https://github.com/VioletGo319/Forecasting-PatchTST-Project) | Applied PatchTST, supervised training, self-supervised pretraining + fine-tuning, and baseline evaluation |
 | **Data science / modeling** | [RL Strategy Evaluation](https://github.com/VioletGo319/Reinforcement_Learning_strategy) · [Cervical Cancer Risk Modeling](https://github.com/VioletGo319/Cervical-Cancer-Classification) | Rolling validation, model comparison, feature selection, and evaluation |
 | **NLP / AI applications** | [Hate Speech Classification](https://github.com/VioletGo319/Hate_speech_detection) | Text preprocessing, BERT representations, baseline comparisons, and ROC analysis |
-| **Research communication** | [SDR Geometry Universe](https://github.com/VioletGo319/sdr-geometry-universe) | Interactive explanation of dimension reduction using Three.js |
 
 ## Selected projects
 
